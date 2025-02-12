@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live HTML</title>
+    <style>
+      html {
+        height: 100%;
+      }
+      body {
+        box-sizing: border-box;
+        display: flex;
+        gap: 16px;
+        height: 100%;
+        margin: 0;
+        padding: 16px;
+      }
+      #htmlcode {
+        border: solid black 3px;
+        box-sizing: border-box;
+        font-family: Monospace, Monospace;
+        font-size: 14px;
+        height: 100%;
+        line-height: normal;
+        outline: none;
+        resize: none;
+        width: 50%;
+      }
+      #htmlpreview {
+        border: solid black 1px;
+        height: 100%;
+        width: 50%;
+      }
+      @media (max-width: 1024px) {
+        body {
+          flex-direction: column-reverse;
+        }
+        #htmlcode {
+          height: 50%;
+          width: 100%;
+        }
+        #htmlpreview {
+          height: 50%;
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <textarea id="htmlcode" onkeydown="ondown(event)" onkeyup="onkey(event)"></textarea>
+    <iframe id="htmlpreview"></iframe>
+  </body>
+  <script>
+    let tabpressed = false;
+    function ondown(event){
+      if (event.keyCode == 9){
+        event.preventDefault();
+        tabpressed = true;
+      }
+    }
+    function onkey(event){
+      if (tabpressed){
+        let sel = document.getElementById("htmlcode").selectionStart;
+        let sel0 = document.getElementById("htmlcode").value.substring(0, sel);
+        let sel1 = document.getElementById("htmlcode").value.substring(sel);
+        document.getElementById("htmlcode").value = sel0 + "  " + sel1;
+        document.getElementById("htmlcode").selectionEnd = sel + 2;
+        tabpressed = false;
+      } else {
+        document.getElementById("htmlpreview").srcdoc = document.getElementById("htmlcode").value;
+      }
+    }
+  </script>
+</html>
